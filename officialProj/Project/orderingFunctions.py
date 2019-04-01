@@ -1,6 +1,6 @@
 import datetime
 
-from inventoryFunctions import *
+from .inventoryFunctions import *
 import time
 time.strftime('%Y-%m-%d %H:%M:%S')
 

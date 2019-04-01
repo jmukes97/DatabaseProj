@@ -1,5 +1,5 @@
-from databaseInit import *
-from dbDataStructures import *
+from .databaseInit import *
+from .dbDataStructures import *
 
 def addRiceType(riceType):
     num = getStateCounter("currentRiceTypeNum")

@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{% static 'stylesheet.css' %}">
+</head>
+<body bgcolor="#000000">
+
+<main>
+
+<titletext><p>Order a bowl!</p></titletext>
+
+<basetext>
+<p>Select your rice:</p>
+    <form method="post">
+        {% csrf_token %}
+<select name="riceType">
+  <option value="brown">Brown Rice</option>
+  <option value="white">White Rice</option>
+  <option value="none">None</option>
+</select>
+
+<p>Select your protein (leave empty for none):</p>
+
+<input type="checkbox" name="protien[]" value="Steak">Steak<br>
+<input type="checkbox" name="protien[]" value="Chicken">Chicken<br>
+<input type="checkbox" name="protien[]" value="Shrimp">Shrimp<br>
+
+<p>Select your toppings:</p>
+
+<input type="checkbox" name="toppings[]" value="WChestnuts">Water Chestnuts<br>
+<input type="checkbox" name="toppings[]" value="Brocoli">Brocoli<br>
+<input type="checkbox" name="toppings[]" value="Onion">Onion<br>
+<input type="checkbox"name="toppings[]" value="NChoy">Nok CHoy<br>
+<input type="checkbox" name="toppings[]" value="Pineapple">Pineapple<br>
+<input type="checkbox" name="toppings[]" value="Spinach">Spinach<br>
+<input type="checkbox" name="toppings[]" value="Corn">Corn<br>
+<input type="checkbox" name="toppings[]" value="Carrots">Carrots<br>
+
+<p>Select your sauce:</p>
+
+<input type="checkbox" name="sauce[]" value="SandSour">Sweet and SourE<br>
+<input type="checkbox" name="sauce[]" value="Teryaki">Teryaki <br>
+<input type="checkbox" name="sauce[]" value="Hsauce">Hot Sauce<br><br>
+<button type="submit"> Order </button>
+    </form>
+</basetext>
+</main>
+
+</body>
+</html>

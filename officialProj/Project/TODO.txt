@@ -1,0 +1,2 @@
+Implement getCurrent and getAll in ordering Fucntions
+Implement place order

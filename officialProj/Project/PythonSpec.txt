@@ -1,0 +1,101 @@
+This is the spec for the frontend to backend interface for the database
+There are extra notes at the bottom
+
+Data Structures
+
+Order:
+	int pk orderNumber
+	string orderName (name of customer, not unique)
+	double orderPrice
+	time pickupTime
+	string statusCode (will be either waiting, readyForPickup, completed, canceled)
+	Bowl[] bowls
+	int[] appetizers
+	Payment payment
+	
+Bowl:
+	int pk bowlNumber
+	int pk orderNumber
+	double bowlPrice
+	string size (will be either small, medium, or large)
+	int riceType
+	int sauceType
+	int[] ingredients //pass the ingredient primary keys
+	
+RiceType:
+	int pk id
+	string name
+	double upcharge
+	bool available
+	
+SauceType:
+	int pk id
+	string name
+	double upcharge
+	bool available
+	
+Appetizer:
+	int pk id
+	string appetizerName
+	double price
+	
+Payment:
+	string paymentType (will be either cash or card)
+	CardInfo cardInfo (for cash, leave card info null)
+	
+Ingredient:
+	int pk id
+	string name
+	double upcharge
+	double ratio
+	bool available
+
+CardInfo:
+	string firstName
+	string lastName
+	string address
+	string cardNumber
+	string ccv
+	string zipCode
+	
+Python procedures
+
+int placeOrder(Order order) -> returns order id number from database
+	//to place a new order, set the order number to -1
+	//to update an existing order, set the order number to the order that needs to be updated
+Order getOrder(int orderNumber)
+Order[] getActiveOrders() -> returns an array of orders with applicable status code
+void setOrderStatus(int orderNumber, string orderStatus)
+void setOrderPayment(int orderNumber, Payment payment)	
+
+RiceType[] getCurrentRiceTypes() -> returns only rice types that are currently available
+RiceType[] getAllRiceTypes() -> returns all rice types regardless of availability
+RiceType getRiceType(int id)
+
+SauceType[] getCurrentSauceTypes() -> returns only sauce types that are currently available
+SauceType[] getAllSauceTypes() -> returns all sauce types regardless of availability
+SauceType getSauceType(int id)
+
+Ingredient[] getCurrentIngredientTypes() -> returns only ingredient types that are available
+Ingredient[] getAllIngredientTypes() -> returns all ingredient types regardless of availability
+Ingredient getIngrediant(int id)
+
+//The following procedures are used for the management app to make modifications to the availability or ingredients
+
+
+int addRiceType(RiceType riceType) -> returns primary key of new rice type
+void removeRiceType(int id)
+
+int addSauceType(SauceType sauceType) -> returns primary key of new sauce type
+void removeSauceType(int id)
+
+int addIngrediantType(Ingredient ingredient) -> returns primary key of new ingredient type
+void removeIngrediantType(int id)
+
+int addAppetizerType(Appetizer appetizer) -> returns primary key of new appetizer type
+void removeAppetizerType(int id)
+
+Notes:
+	When removing data from the database for Rice/Sauce/Ingredient/Appetizer, it won't be removed internally.
+	Instead, the availability of the old value will be set to false
+	Additionally, when adding or updating an existing type, the ID will always be changed, so you will have to update the front end ID

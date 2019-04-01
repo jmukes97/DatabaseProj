@@ -1,0 +1,40 @@
+The order status maps integers to a corresponding status string
+order_status(pk status_code integer, status_name string);
+
+the orders table maps an order number to it's details, including price, status, and pickup time
+orders(pk order_number integer, order_price decimal, pickup_time datetime, fk status_code integer references order_status);
+
+These two tables just map the types of rice and sauce to strings describing them, an upcharge price (default is 0) and if they are available
+rice_type(pk type_id integer, type_name string, upcharge decimal, available bool);
+sauce_type(pk type_id integer, sauce_name string, upcharge decimal, available bool);
+
+this table maps an integer to the size of the bowls, and their base price
+bowl_sizes(pk type_id integer, size_name string, size_price decimal);
+
+this table stores all of the bowl information for orders
+it has two primary keys, an order number and a bowl number
+it contains basic info about the bowl, including the price, size, rice type, and sauce type.
+bowls(pk fk order_number integer references orders, pk bowl_number integer, bowl_price decimal, fk rice_type integer references rice_type, fk sauce_type integer references sauce_type, fk bowl_size integer references bowl_sizes);
+
+this bowl maps an integer to a type of ingredient, it's upcharge (default 0) and if it's available, and the ratio of the ingredient to others (default 1)
+ingrediant_type(pk type_id integer, ingrediant_name string, upcharge decimal, ratio integer, available bool);
+
+this table maps bowls to their ingredients. It has a composite primary key, order number, bowl number, and ingredient type
+bowl_ingrediants(pk fk order_number integer references orders, pk fk bowl_number integer, pk fk ingrediant_type integer references ingrediant_type);
+
+this table maps appetizers to a string describing them, and their price
+appetizer_type(pk type_id integer, appetizer_name string, appetizer_price decimal);
+
+this table maps an order to its appetizers
+appetizers(pk order_number integer, pk appetizer_number integer, number_ordered integer, fk order_number references orders, fk appetizer_number references appetizer_type);
+
+this table maps a payment to a string detailing its name
+payment_type(pk type_id integer, payment_name string);
+
+this table maps a card payment to an order, including customers card info
+card_info(pk order_number integer, f_name string, l_name string, address string, card_number integer(16), ccv integer(4), card_zip integer(5), fk order_number references orders);
+
+this table maps a payment to an order, including details about the type of payment
+payments(pk order_number integer, fk payment_type references payment_type)
+
+This database was designed to minimize data redundancy, and in this schema, the only functional dependencies that exist are between their primary keys, and attributes of the tables. The only exception to this is for price, which can be determined by adding up the price of the bowls, and ingredients. However, price is cached in this database since it would need to be computed very often.
